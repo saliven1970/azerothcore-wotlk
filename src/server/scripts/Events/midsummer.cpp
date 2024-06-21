@@ -153,7 +153,7 @@ uint32 const GoBonfireCity[COUNT_GO_BONFIRE_CITY] = { 181332, 181333, 181334, 18
 class MidsummerPlayerScript : public PlayerScript
 {
 public:
-    MidsummerPlayerScript() : PlayerScript("MidsummerPlayerScript")
+    MidsummerPlayerScript() : PlayerScript("MidsummerPlayerScript", {PLAYERHOOK_ON_UPDATE_ZONE})
     {
     }
 
@@ -709,7 +709,8 @@ struct npc_midsummer_ribbon_pole_target : public ScriptedAI
         // remove non-dancing players from list
         std::erase_if(_dancerList, [](Player* dancer)
             {
-                return !dancer->HasAura(SPELL_RIBBON_POLE_PERIODIC_VISUAL);
+                if (dancer) /// @todo: replace with GUID storage rather than Player object
+                    return !dancer->HasAura(SPELL_RIBBON_POLE_PERIODIC_VISUAL);
             });
     }
 
